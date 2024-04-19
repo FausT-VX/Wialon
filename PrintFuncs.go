@@ -7,11 +7,11 @@ import (
 )
 
 // PrintJTable печатает таблицу по данным структуры jsonTable
-func PrintJTable(table jsonTable) {
+func printJTable(table jsonTable) {
 	for _, element := range table {
 		for _, group := range element.Groups {
 			for _, row := range group.Rows {
-				PrintRow(row)
+				printRow(row)
 			}
 			fmt.Println()
 		}
@@ -19,7 +19,7 @@ func PrintJTable(table jsonTable) {
 }
 
 // PrintRow печатает одну строку данных таблицы из JSON в отформатированном виде.
-func PrintRow(val any) {
+func printRow(val any) {
 	switch val.(type) {
 	case string:
 		format := ""
@@ -53,20 +53,20 @@ func PrintRow(val any) {
 }
 
 // PrintAny печатает любой JSON (any, map[string]interface{})
-func PrintAny(val any) {
-	switch val.(type) {
-	case string:
-		fmt.Printf("%-15s | ", val)
-	case float64:
-		fmt.Printf("%-10.2f | ", val)
-	case map[string]interface{}:
-		fmt.Printf("\n%50s", "")
-		if element, ok := val.(map[string]interface{}); ok {
-			for _, v := range element {
-				PrintAny(v)
-			}
-		}
-	default:
-		fmt.Printf("ХЗ: %-10v | ", val)
-	}
-}
+// func printAny(val any) {
+// 	switch val.(type) {
+// 	case string:
+// 		fmt.Printf("%-15s | ", val)
+// 	case float64:
+// 		fmt.Printf("%-10.2f | ", val)
+// 	case map[string]interface{}:
+// 		fmt.Printf("\n%50s", "")
+// 		if element, ok := val.(map[string]interface{}); ok {
+// 			for _, v := range element {
+// 				printAny(v)
+// 			}
+// 		}
+// 	default:
+// 		fmt.Printf("ХЗ: %-10v | ", val)
+// 	}
+// }

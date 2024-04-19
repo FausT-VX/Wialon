@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"net/url"
 	"time"
-	//"github.com/sanity-io/litter"
 )
 
 // URL сервера Wialon API
@@ -19,8 +18,8 @@ var Token = ""
 
 var y, m, d = time.Now().Date()
 var loc = time.Now().Location()
-var dateBeg = time.Date(y, m, d, 8, 00, 00, 0, loc).Add(-time.Hour * 24).Unix() // Дата начала отчета
-var dateEnd = time.Date(y, m, d, 9, 59, 59, 0, loc).Add(-time.Hour * 24).Unix() // Дата окончания отчета
+var dateBeg = time.Date(y, m, d, 8, 00, 00, 0, loc).Add(-time.Hour * 24).Unix()  // Дата начала отчета
+var dateEnd = time.Date(y, m, d, 23, 59, 59, 0, loc).Add(-time.Hour * 24).Unix() // Дата окончания отчета
 
 // Структура данных получаемого JSON
 type jsonTable []struct {
@@ -47,11 +46,17 @@ type jsonTable []struct {
 func main() {
 	WialonURL, Token = readSettingFromINI("Wialon.ini")
 	sid := WialonAPI_GetSID()
-	println(sid)
+	fmt.Println(sid)
 	WialonAPI_ExecReport(sid)
-	PrintJTable(WialonAPI_GetTable(sid, 0))
-	PrintJTable(WialonAPI_GetTable(sid, 1))
-	PrintJTable(WialonAPI_GetTable(sid, 2))
+	table0 := WialonAPI_GetTable(sid, 0)
+	table1 := WialonAPI_GetTable(sid, 1)
+	table2 := WialonAPI_GetTable(sid, 2)
+	printJTable(table0)
+	printJTable(table1)
+	printJTable(table2)
+	exportJsonTableToExcel(table0, "Поездки", "Wialon")
+	exportJsonTableToExcel(table1, "События", "Wialon")
+	exportJsonTableToExcel(table2, "Геозоны", "Wialon")
 }
 
 // WialonAPI_GetSID используя Wialon-API подключается к серверу Wialon используя токен-безопасности
